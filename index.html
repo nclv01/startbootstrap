@@ -29,6 +29,8 @@
                         </li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">CONTACT</a>
                         </li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/forum/index.php">FORUMS</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -68,7 +70,6 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div><img class="img-fluid" src="assets/img/portfolio/githubLogo.png" alt="GitHub"/>
-                            <!-- TO DO insert GitHub logo-->
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-4 mb-5">
@@ -105,8 +106,10 @@
                                         <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                                         <div class="divider-custom-line"></div>
                                     </div>
+                                    <a href="https://github.com/nclv01">
                                     <!-- Portfolio Modal - Image--><img class="img-fluid rounded mb-5" src="assets/img/portfolio/githubLogo.png" 
                                     alt="GitHub"/>
+                                    </a>
                                     <!-- Portfolio Modal - Text-->
                                     <p class="mb-5">A place where you can review my code, store your own code in the cloud, or make migrations easier with Git support!</p>
                                     <button class="btn btn-primary" href="#" data-dismiss="modal"><i class="fas fa-times fa-fw"></i>Close Window</button>
@@ -128,14 +131,79 @@
                                     <!-- Portfolio Modal - Title-->
                                     <h2 class="portfolio-modal-title text-secondary mb-0">Gaming</h2>
                                     <!-- Icon Divider-->
+                                    
                                     <div class="divider-custom">
                                         <div class="divider-custom-line"></div>
                                         <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                                         <div class="divider-custom-line"></div>
                                     </div>
-                                    <!-- Portfolio Modal - Image--><img class="img-fluid rounded mb-5" src="assets/img/portfolio/game.png" alt="Gaming"/>
+                                    <!--Attempt at chessboard.js implumintation-->
+                                    <!--- Begin Example HTML ------------------------------------------------------>
+                                    <div id="myBoard" style="margin: 0 auto;width: 400px"></div>
+                                    <!--- End Example HTML -------------------------------------------------------->
+
+                                    <link rel="stylesheet" href="css/chessboard-1.0.0.min.css">
+                                    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+                                    <script src="js/chessboard-1.0.0.min.js"></script>
+                                    <script src="js/chess.js"></script>
+                                    <script>
+                                       
+                                        var board = null
+                                        var game = new Chess()
+                                        
+                                        function onDragStart (source, piece, position, orientation) {
+                                        // do not pick up pieces if the game is over
+                                        if (game.game_over()) return false
+                                        
+                                        // only pick up pieces for White
+                                        if (piece.search(/^b/) !== -1) return false
+                                        }
+                                        
+                                        function makeRandomMove () {
+                                        var possibleMoves = game.moves()
+                                        
+                                        // game over
+                                        if (possibleMoves.length === 0) return
+                                        
+                                        var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+                                        game.move(possibleMoves[randomIdx])
+                                        board.position(game.fen())
+                                        }
+                                        
+                                        function onDrop (source, target) {
+                                        // see if the move is legal
+                                        var move = game.move({
+                                            from: source,
+                                            to: target,
+                                            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+                                        })
+                                        
+                                        // illegal move
+                                        if (move === null) return 'snapback'
+                                        
+                                        // make random legal move for black
+                                        window.setTimeout(makeRandomMove, 250)
+                                        }
+                                        
+                                        // update the board position after the piece snap
+                                        // for castling, en passant, pawn promotion
+                                        function onSnapEnd () {
+                                        board.position(game.fen())
+                                        }
+                                        
+                                        var config = {
+                                        draggable: true,
+                                        position: 'start',
+                                        onDragStart: onDragStart,
+                                        onDrop: onDrop,
+                                        onSnapEnd: onSnapEnd
+                                        }
+                                        board = Chessboard('myBoard', config)
+
+
+                                    </script>
                                     <!-- Portfolio Modal - Text-->
-                                    <p class="mb-5">A place for game development, for fun.</p>
+                                    <p class="mb-5">Take a break and try to outsmart this chess bot written in 1 page of Javascript!</p>
                                     <button class="btn btn-primary" href="#" data-dismiss="modal"><i class="fas fa-times fa-fw"></i>Close Window</button>
                                 </div>
                             </div>
@@ -160,7 +228,10 @@
                                         <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                                         <div class="divider-custom-line"></div>
                                     </div>
-                                    <!-- Portfolio Modal - Image--><img class="img-fluid rounded mb-5" src="assets/img/portfolio/forumLogo.png" alt="Forums"/>
+                                    <!-- Portfolio Modal - Image-->
+                                    <a href="/forum/index.php">
+                                    <img class="img-fluid rounded mb-5" src="assets/img/portfolio/phpBBlogo.png" alt="Forums"/>
+                                    </a>
                                     <!-- Portfolio Modal - Text-->
                                     <p class="mb-5">A place to exchange ideas.</p>
                                     <button class="btn btn-primary" href="#" data-dismiss="modal"><i class="fas fa-times fa-fw"></i>Close Window</button>
@@ -256,7 +327,9 @@ Users of this website are encouraged to report any bugs using the CONTACT sectio
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
                         <h4 class="mb-4">DEVELOPERS</h4>
+                        <a href="underTheHood.html">
                         <p class="pre-wrap lead mb-0">What's under the hood?</p>
+                        </a>
                     </div>
                 </div>
             </div>
